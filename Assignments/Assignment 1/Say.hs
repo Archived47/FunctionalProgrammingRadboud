@@ -9,6 +9,7 @@ type BelowThousand = Integer
 toGroups :: Integer -> Group
 toGroups n = if n >= 10^6 then undefined else (n `div` 1000, n `mod` 1000)
 
+-- condiftionalSay --> a kind of hack to remove the zero in 300, 400, etc
 condiftionalSay :: Integer -> String
 condiftionalSay n = if n > 0 then " " ++ say n else ""
 
