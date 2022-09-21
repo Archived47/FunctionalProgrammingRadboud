@@ -13,6 +13,7 @@ shuffle :: [Int] -> [a] -> [a]
 shuffle ns xs = map fst (sortBy (\(_,a) (_,b) -> compare a b) [(x, i) | (x, i) <- zip xs ns])
 
 shuffleMiddle :: String -> String
+shuffleMiddle [] = []
 shuffleMiddle [c] = [c]
 shuffleMiddle str = head str : shuffle randomizedIndexes middle ++ end
   where
