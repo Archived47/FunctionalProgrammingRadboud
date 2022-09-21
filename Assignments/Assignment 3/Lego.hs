@@ -1,7 +1,6 @@
 module Lego where
 
-import Data.List
-import Data.Tuple ()
+import Data.List ( sort, sortBy )
 
 removeAt :: Int -> [a] -> [a]
 removeAt n [] = []
