@@ -12,6 +12,7 @@ shift :: Int -> Char -> Char
 shift n c = if isAsciiUpper c then asciiShift n c else c
   where
     asciiShift :: Int -> Char -> Char
+    asciiShift 0 c = c
     asciiShift n c
       | ascii + n > ord 'Z' = chr (result - 26)
       | otherwise = chr result
