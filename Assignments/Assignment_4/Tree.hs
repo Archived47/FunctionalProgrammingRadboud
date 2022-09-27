@@ -1,4 +1,3 @@
--- {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Tree where
 
 data Tree a = Leaf | Node a (Tree a) (Tree a)
@@ -68,9 +67,25 @@ fromList (x:xs) = insert x (fromList xs)
 
 {----------- exercise 4.5 -------------}
 
---inOrder :: Tree a -> [a]
---fromAscList :: [a] -> Tree a
---breadthFirst :: Tree a -> [a]
+inOrder :: Tree a -> [a]
+inOrder Leaf = []
+inOrder (Node a b c) =  inOrder b ++ [a] ++ inOrder c
+
+fromAscList :: [a] -> Tree a
+fromAscList [] = Leaf
+fromAscList [x] = Node x Leaf Leaf
+fromAscList lst = Node (head sndSplt) (fromAscList (fst splt)) (fromAscList (tail sndSplt))
+  where
+    splt = splitAt (length lst `div` 2) lst
+    sndSplt = snd splt
+
+breadthFirst :: Tree a -> [a]
+breadthFirst t = helper [t]
+  where 
+    helper :: [Tree a] -> [a]
+    helper [] = []
+    helper (Leaf : xs) = helper xs
+    helper ((Node a b c) : xs) = a : helper (xs ++ [b, c])
 
 {- BONUS: a tree pretty printer; the recursive structure of this function
  - is prety simple, but it is a fiddly function to write if you want it to
