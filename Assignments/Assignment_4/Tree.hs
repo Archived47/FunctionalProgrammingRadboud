@@ -1,3 +1,4 @@
+-- {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Tree where
 
 data Tree a = Leaf | Node a (Tree a) (Tree a)
@@ -30,10 +31,40 @@ isSearchTree (Node n (Node a b c) (Node d e f)) = n > a && isSearchTree (Node a 
 
 {----------- exercise 4.4 -------------}
 
---member :: (Ord a) => a -> Tree a -> Bool
---insert :: (Ord a) => a -> Tree a -> Tree a
---delete :: (Ord a) => a -> Tree a -> Tree a
---fromList :: (Ord a) => [a] -> Tree a
+member :: (Ord a) => a -> Tree a -> Bool
+member item Leaf = False
+member item (Node n a b)
+  | item < n = member item a
+  | item > n = member item b
+  | otherwise = item == n
+
+insert :: (Ord a) => a -> Tree a -> Tree a
+insert item Leaf = Node item Leaf Leaf
+insert item (Node n a b)
+  | item < n = Node n (insert item a) b
+  | item > n = Node n a (insert item b)
+  | otherwise = Node n a b
+
+delete :: (Ord a) => a -> Tree a -> Tree a
+delete item Leaf = Leaf
+delete item (Node n Leaf Leaf) = if n == item then Leaf else Node n Leaf Leaf
+delete item (Node a Leaf (Node b c d)) = if item == a then Node b c d else Node a (delete item (Node b c d)) Leaf
+delete item (Node a (Node b c d) Leaf) = if item == a then Node b c d else Node a (delete item (Node b c d)) Leaf
+delete item (Node a (Node b c d) (Node e f g))
+  | item < a = Node a (delete item (Node b c d)) (Node e f g)
+  | item > a = Node a (Node b c d) (delete item (Node e f g))
+  | otherwise = Node b c (insertSmallerTree d (Node e f g))
+  where
+    insertSmallerTree :: (Ord a) => Tree a -> Tree a -> Tree a
+    insertSmallerTree Leaf tree = tree
+    insertSmallerTree smaller Leaf = smaller
+    insertSmallerTree smaller (Node a Leaf b) = Node a smaller b
+    insertSmallerTree smaller (Node a b c) = Node a (insertSmallerTree smaller b) c
+
+fromList :: (Ord a) => [a] -> Tree a
+fromList [] = Leaf
+fromList [x] = Node x Leaf Leaf
+fromList (x:xs) = insert x (fromList xs)
 
 {----------- exercise 4.5 -------------}
 
