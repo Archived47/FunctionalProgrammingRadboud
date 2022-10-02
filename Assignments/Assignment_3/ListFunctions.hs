@@ -10,7 +10,7 @@ and (x:xs) = x && and xs
 
 or :: [Bool] -> Bool
 or [] = True
-or (x:xs) = x || and xs
+or (x:xs) = x || or xs
 
 elem :: (Eq a) => a -> [a] -> Bool
 elem el [] = False

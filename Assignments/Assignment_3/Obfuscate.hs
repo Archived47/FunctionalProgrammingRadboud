@@ -12,6 +12,7 @@ getRandomNumber n = a * a * a `mod` m
 shuffle :: [Int] -> [a] -> [a]
 shuffle ns xs = map fst (sortBy (\(_,a) (_,b) -> compare a b) [(x, i) | (x, i) <- zip xs ns])
 
+-- Doesn't work with [char, punctuation]
 shuffleMiddle :: String -> String
 shuffleMiddle [] = []
 shuffleMiddle [c] = [c]
