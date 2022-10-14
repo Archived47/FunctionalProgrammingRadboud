@@ -8,10 +8,10 @@ data Card  = Card { suit :: Suit, value :: Value }    deriving (Eq,Ord)
 
 -- if you have trouble with Unicode, change these definitions as indicated (or fix your locale!)
 instance Show Suit where
-  show Clubs    = "♣" -- "C"
-  show Diamonds = "♦" -- "D"
-  show Hearts   = "♥" -- "H"
-  show Spades   = "♠" -- "S"
+  show Clubs    = "C" -- "C"
+  show Diamonds = "D" -- "D"
+  show Hearts   = "H" -- "H"
+  show Spades   = "S" -- "S"
 instance Show Value where
   show Ace   = "A"
   show King  = "K"

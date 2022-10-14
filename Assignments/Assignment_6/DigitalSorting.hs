@@ -2,6 +2,7 @@ module DigitalSorting where
 
 import Data.List
 import Data.Char
+import Deck
 
 class Rankable key where
   rank :: [(key,a)] -> [[a]]
@@ -12,13 +13,24 @@ digitalSortOn f = concat . rank . map (\x->(f x, x))
 digitalSort :: (Rankable key) => [key] -> [key]
 digitalSort = digitalSortOn id
 
---genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank = map (map snd) . groupBy (\(a0, b0) (a1, b1) -> a0 == a1) . sortOn fst
+-- genericRank :: [Card] -> [[Value]]
+-- genericRank = map (map value) . groupBy (\x y -> suit x == suit y) . sortOn suit
 
---instance Rankable Int where ... etc.
+instance Rankable Int where
+  rank = genericRank
 
---instance Rankable Bool where ...
+instance Rankable Integer where
+  rank = genericRank
 
---instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
+instance Rankable Char where
+  rank = genericRank
+
+instance Rankable Bool where
+  rank xs = [[value | (key, value) <- xs, not key], [value | (key, value) <- xs, key]]
+
+-- instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
 
 --etc.
 
