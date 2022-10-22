@@ -16,7 +16,7 @@ frequencies = map (\x -> (head x, length x)) . group . sort
 
 -----------------------------------------------------------------------
 
--- Left it like this as this was my thougt process, can be optimized and written down on a single line
+-- Left it like this as this was my thougt process
 huffman :: [(a, Int)] -> Btree a
 huffman = head . map fst . step3
   where
@@ -62,7 +62,7 @@ decode tree xs = decodeHelper tree (xs, [])
     -- decodeHelper :: (Ord a) => Btree a -> ([Bit], [Bit]) -> [a]
     decodeHelper tree ([], []) = []
     decodeHelper tree ([], retainer) = findItem retainer
-    decodeHelper tree (x:xs, retainer) =  if null result then decodeHelper tree (xs, x : retainer) else result ++ decodeHelper tree (xs, [])
+    decodeHelper tree (x:xs, retainer) = if null result then decodeHelper tree (xs, x : retainer) else result ++ decodeHelper tree (xs, [])
       where result = findItem (x : retainer)
 
 encodeTest = encode ct "hello world"
