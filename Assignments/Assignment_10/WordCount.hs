@@ -5,6 +5,8 @@ import System.Environment
 import System.Directory (getCurrentDirectory, getDirectoryContents)
 import System.FilePath (takeExtension, takeFileName)
 
+-- TODO redo some shit with arrays, makes it easier
+
 main :: IO ()
 main = do
   args <- getArgs
