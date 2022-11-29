@@ -20,8 +20,8 @@ coloursList = [White, Silver, Green, Red, Orange, Pink, Yellow, Blue]
 scoreAttempt :: (Ord a) => [a] -> [a] -> (Int, Int)
 scoreAttempt code guess = (score, correctColours - score)
   where
-    codeArray = array (1, length code) (zip [1.. length code] code)
-    guessArray = array (1, length guess) (zip [1.. length guess] guess)
+    codeArray = array (1, length code) (zip [1..] code)
+    guessArray = array (1, length guess) (zip [1..] guess)
 
     score = sum [
         if codeArray ! i == guessArray ! i then 1 else 0
