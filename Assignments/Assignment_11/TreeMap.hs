@@ -5,6 +5,6 @@ module TreeMap where
 import Tree
 
 instance Functor Tree where
-  -- fmap :: ???
-  fmap _ Leaf = ...
-  fmap f (Node x lt rt) = ...
+  -- fmap :: (a -> b) -> Tree a -> Tree b
+  fmap _ Leaf = Leaf
+  fmap f (Node x lt rt) = Node (f x) (fmap f lt) (fmap f rt)
