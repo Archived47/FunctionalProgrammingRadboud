@@ -9,9 +9,14 @@ import RandomGen
 import LCG
 import Exception (try, SomeException (SomeException), evaluate)
 
-data Expr = Lit Int | Dice Int
-          | Expr :+: Expr
-          | Min Expr Expr | Max Expr Expr
+data Expr =
+    Lit Int
+    | Dice Int
+    | Expr :+: Expr
+    | Expr :-: Expr
+    | Expr :/: Int
+    | Min Expr Expr
+    | Max Expr Expr
   deriving (Show)
 
 infixl 6 :+:
@@ -19,18 +24,20 @@ infixl 6 :+:
 type DiceAction m = Int -> m Int
 
 -- evalM :: Expr -> DiceAction IO -> IO Int             -- prototype
--- evalM (Lit a) action = action a
+-- evalM (Lit a) action = return a
 -- evalM (Dice a) action = action a
 -- evalM (x :+: y) action = (+) <$> evalM x action <*> evalM y action
 -- evalM (Min x y) action = min <$> evalM x action <*> evalM y action
 -- evalM (Max x y) action = min <$> evalM x action <*> evalM y action
 
 evalM :: (Monad m) => Expr -> DiceAction m -> m Int  -- final version
-evalM (Lit a) action = action a
+evalM (Lit a) action = return a
 evalM (Dice a) action = action a
-evalM (x :+: y) action = (+) <$> evalM x action <*> evalM y action
-evalM (Min x y) action = min <$> evalM x action <*> evalM y action
-evalM (Max x y) action = min <$> evalM x action <*> evalM y action
+evalM (e1 :/: a) action = do {result <- evalM e1 action; return (result `div` a); }
+evalM (e1 :+: e2) action = (+) <$> evalM e1 action <*> evalM e2 action
+evalM (e1 :-: e2) action = (-) <$> evalM e1 action <*> evalM e2 action
+evalM (Min e1 e2) action = min <$> evalM e1 action <*> evalM e2 action
+evalM (Max e1 e2) action = min <$> evalM e1 action <*> evalM e2 action
 
 evalRIO :: Expr -> IO Int
 -- evalRIO expr = evalM expr (\dice->randomRIO (1,dice) >>= return) -- silent version
