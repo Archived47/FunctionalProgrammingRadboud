@@ -1,20 +1,20 @@
--- Pair :: ...
+-- Pair :: * -> *
 data Pair a = Pair a a
 
--- Tuple :: ...
+-- Tuple :: * -> * -> * -> *
 data Tuple a b c = Tuple a b c
 
--- MList :: ...
+-- MList :: (* -> *) -> * -> *
 data MList m a = Nil | Cons (m (a, MList m a))
 
--- Compose :: ...
+-- Compose :: (* -> *) -> (* -> *) -> * -> *
 newtype Compose f g a = Compose { runCompose :: f (g a) }
 
--- Funkytor :: ...
+-- Funkytor :: (* -> * -> *) -> Constraint
 class Funkytor f where
   funkymap :: (a -> b) -> (b -> a) -> f a b -> f b a
 
--- ToList :: ...
+-- ToList :: * -> Constraint
 class ToList a where
   toList :: a -> [a]
 
